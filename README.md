@@ -1,3 +1,5 @@
+# Kit RTD
+
 Colocar simulador a funcionar:
   1. Colocar a pasta RTD/Simulador/Visual Studio/str/ no C: de modo a ficar C:/str/STR_RTD/...
   2. Abrir o STR_RTD.sln que está dentro da pasta C:/str/STR_RTD/
