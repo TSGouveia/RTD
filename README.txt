@@ -4,6 +4,8 @@ Colocar simulador a funcionar:
   Abrir a Unity.exe que está na pasta RTD/Simulador/Executável/Windows/
   Correr a Unity
   Correr o Visual Studio
+  No Visual Studio, escolher a opção pretendida (1, 2 ou 3)
+  Na Unity, spawnar o bloco
 
 Colocar o kit fisico a funcionar:
   Por fazer
