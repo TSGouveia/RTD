@@ -1,3 +1,6 @@
+#include <WiFi.h>
+#include <WebServer.h>
+
 #define ATUADOR_1 23
 #define ATUADOR_2 22
 #define ATUADOR_3 21
@@ -16,11 +19,31 @@
 
 #define MACHINEDELAY 1000
 
-#define MEMORYMULTIPLIER 8
+#define SKILL1 "C1SL1"
+#define SKILL2 "SL1C2"
+#define SKILL3 "C2C3"
+#define SKILL4 "C3SL2"
+#define SKILL5 "SL2C4"
+
+#define SKILL6 "mill"
+#define SKILL7 "drill"
+
+#define SSID "Kit FMS"
+#define PASSWORD "demo01FMS"
+
+IPAddress local_IP(192, 168, 2, 69);  // Set your Static IP address
+IPAddress gateway(192, 168, 1, 1);    // Set your Gateway IP address
+IPAddress subnet(255, 255, 0, 0);
+
+WebServer server(80);
+
+int skillRequest = 0;
+
+portMUX_TYPE spinlock = portMUX_INITIALIZER_UNLOCKED;
+
 ////////////////////////////////
 ///////////////////////Handlers
 ////////////////////////////////
-portMUX_TYPE spinlock;
 
 SemaphoreHandle_t sem_Milling;
 SemaphoreHandle_t sem_Drilling;
@@ -52,9 +75,13 @@ void setup() {
   Serial.begin(115200);  //initialize serial communication at a 9600 baud rate
   startPorts();
   setupFreeRTOS();
+  setupWiFi();
 }
 void loop() {
+  server.handleClient();
+  delay(1);
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////// Sensor and Atuador /////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -152,19 +179,45 @@ void setupFreeRTOS() {
   sem_C3SL2 = xSemaphoreCreateCounting(100, 0);
   sem_SL2C4 = xSemaphoreCreateCounting(100, 0);
 
-  xTaskCreate(Task_Receive_Skill, "Task_Receive_Skill", 128 * MEMORYMULTIPLIER, NULL, 0, NULL);
+  xTaskCreate(Task_Receive_Skill, "Task_Receive_Skill", 1024, NULL, 0, NULL);
 
-  xTaskCreate(Task_Conveyor1_Slider1, "Task_Conveyor1_Slider1", 128 * MEMORYMULTIPLIER, NULL, 0, NULL);
-  xTaskCreate(Task_Slider1_Conveyor2, "Task_Slider1_Conveyor2", 128 * MEMORYMULTIPLIER, NULL, 0, NULL);
-  xTaskCreate(Task_Conveyor2_Conveyor3, "Task_Conveyor2_Conveyor3", 128 * MEMORYMULTIPLIER, NULL, 0, NULL);
-  xTaskCreate(Task_Conveyor3_Slider2, "Task_Conveyor3_Slider2", 128 * MEMORYMULTIPLIER, NULL, 0, NULL);
-  xTaskCreate(Task_Slider2_Conveyor4, "Task_Slider2_Conveyor4", 128 * MEMORYMULTIPLIER, NULL, 0, NULL);
+  xTaskCreate(Task_Conveyor1_Slider1, "Task_Conveyor1_Slider1", 2048, NULL, 0, NULL);
+  xTaskCreate(Task_Slider1_Conveyor2, "Task_Slider1_Conveyor2", 2048, NULL, 0, NULL);
+  xTaskCreate(Task_Conveyor2_Conveyor3, "Task_Conveyor2_Conveyor3", 2048, NULL, 0, NULL);
+  xTaskCreate(Task_Conveyor3_Slider2, "Task_Conveyor3_Slider2", 2048, NULL, 0, NULL);
+  xTaskCreate(Task_Slider2_Conveyor4, "Task_Slider2_Conveyor4", 2048, NULL, 0, NULL);
 
-  xTaskCreate(Task_Milling_Machine, "Task_Milling_Machine", 128 * MEMORYMULTIPLIER, NULL, 0, NULL);
-  xTaskCreate(Task_Drilling_Machine, "Task_Drilling_Machine", 128 * MEMORYMULTIPLIER, NULL, 0, NULL);
+  xTaskCreate(Task_Milling_Machine, "Task_Milling_Machine", 1024, NULL, 0, NULL);
+  xTaskCreate(Task_Drilling_Machine, "Task_Drilling_Machine", 1024, NULL, 0, NULL);
 
-  xTaskCreate(Task_Slider_1, "Task_Slider_1", 128 * MEMORYMULTIPLIER, NULL, 0, NULL);
-  xTaskCreate(Task_Slider_2, "Task_Slider_2", 128 * MEMORYMULTIPLIER, NULL, 0, NULL);
+  xTaskCreate(Task_Slider_1, "Task_Slider_1", 1024, NULL, 0, NULL);
+  xTaskCreate(Task_Slider_2, "Task_Slider_2", 1024, NULL, 0, NULL);
+}
+void setupWiFi() {
+  if (!WiFi.config(local_IP, gateway, subnet)) {
+    Serial.println("Erro a configurar IP estático");
+  }
+
+  WiFi.setSleep(WIFI_PS_NONE);
+
+  WiFi.begin(SSID, PASSWORD);
+  Serial.print("Connecting to WiFi");
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(100);
+    Serial.print(".");
+  }
+
+  Serial.println("\nWiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+
+  server.on("/transporte/", HTTP_POST, handlePostTransporte);
+  server.on("/estacao/", HTTP_POST, handlePostEstacao);
+  server.onNotFound(handleNotFound);
+
+  server.begin();
+  Serial.println("HTTP server started");
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -207,9 +260,124 @@ void SetBitValue(int portIndex, int value) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////// HTTP Requests /////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+void handlePostTransporte() {
+  while (skillRequest != 0) {}
+
+  String message = "";
+  if (server.hasArg("skill")) {
+    message = server.arg("skill");
+  }
+  if (message == SKILL1) {
+    skillRequest = 1;
+    server.send(200, "text/plain", "Skill " + message + " started");
+  } else if (message == SKILL2) {
+    skillRequest = 2;
+    server.send(200, "text/plain", "Skill " + message + " started");
+  } else if (message == SKILL3) {
+    skillRequest = 3;
+    server.send(200, "text/plain", "Skill " + message + " started");
+  } else if (message == SKILL4) {
+    skillRequest = 4;
+    server.send(200, "text/plain", "Skill " + message + " started");
+  } else if (message == SKILL5) {
+    skillRequest = 5;
+    server.send(200, "text/plain", "Skill " + message + " started");
+  } else {
+    server.send(200, "text/plain", "Skill " + message + " not found");
+  }
+}
+void handlePostEstacao() {
+  while (skillRequest != 0) {}
+
+  String message = "";
+  if (server.hasArg("skill")) {
+    message = server.arg("skill");
+  }
+  if (message == SKILL6) {
+    xSemaphoreGive(sem_Milling);
+    server.send(200, "text/plain", "Skill " + message + " started");
+  } else if (message == SKILL7) {
+    xSemaphoreGive(sem_Drilling);
+    server.send(200, "text/plain", "Skill " + message + " started");
+  } else {
+    server.send(200, "text/plain", "Skill " + message + " not found");
+  }
+}
+void handleNotFound() {
+  String message = "Erro ao executar skill\n\n";
+  message += "Obtido:\n";
+  message += "URI: ";
+  message += server.uri();
+  message += "\nMetodo: ";
+  message += (server.method() == HTTP_GET) ? "GET" : "POST";
+  message += "\nArgumentos: ";
+  message += server.args();
+  message += "\n";
+
+  for (uint8_t i = 0; i < server.args(); i++) {
+    message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
+  }
+  message += "\nEsperado:\nURI: /transporte/\nMetodo: POST\nArgumentos: 1\n skill: C1SL1\n";
+  message += "\nVerifica se o pedido é um POST";
+  message += "\nVerifica se o pedido tem o seguinte formato:\n";
+  message += "192.168.2.69:80/transporte/?skill=C1SL1\n";
+  message += "\nSkills disponiveis:\n";
+  message += " /transporte/\n  ";
+  message += SKILL1;
+  message += "\n  ";
+  message += SKILL2;
+  message += "\n  ";
+  message += SKILL3;
+  message += "\n  ";
+  message += SKILL4;
+  message += "\n  ";
+  message += SKILL5;
+  message += "\n ";
+
+  message += "/estacao/\n  ";
+  message += SKILL6;
+  message += "\n  ";
+  message += SKILL7;
+  message += "\n";
+
+  server.send(404, "text/plain", message);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////// Receive Skill /////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 void Task_Receive_Skill(void* pvParameters) {
+  while (1) {
+    switch (skillRequest) {
+      case 0:
+        break;
+      case 1:
+        xSemaphoreGive(sem_C1SL1);
+        break;
+      case 2:
+        xSemaphoreGive(sem_SL1C2);
+        break;
+      case 3:
+        xSemaphoreGive(sem_C2C3);
+        break;
+      case 4:
+        xSemaphoreGive(sem_C3SL2);
+        break;
+      case 5:
+        xSemaphoreGive(sem_SL2C4);
+        break;
+      case 6:
+        xSemaphoreGive(sem_Milling);
+        break;
+      case 7:
+        xSemaphoreGive(sem_Drilling);
+        break;
+    }
+    skillRequest = 0;
+    vTaskDelay(1);
+  }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
