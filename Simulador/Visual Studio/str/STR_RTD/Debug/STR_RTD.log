@@ -1,0 +1,7 @@
+﻿  my_interaction_functions.cpp
+C:\str\include\my_interaction_functions.cpp(12,1): warning C4005: '_WINSOCK_DEPRECATED_NO_WARNINGS': redefinição de macro
+  C:\str\include\my_interaction_functions.cpp(12,1):
+  '_WINSOCK_DEPRECATED_NO_WARNINGS' declarado anteriormente na linha de comando
+  
+C:\str\include\my_interaction_functions.cpp(61): warning C4715: 'ConnectUnity': nem todos os caminhos de controle retornam um valor
+  STR_RTD.vcxproj -> C:\str\STR_RTD\Debug\STR_RTD.exe
