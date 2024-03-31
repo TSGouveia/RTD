@@ -1,6 +1,3 @@
-#include <Wire.h>
-
-////////////////////////////////////////////
 #define ATUADOR_1 23
 #define ATUADOR_2 22
 #define ATUADOR_3 21
@@ -17,24 +14,17 @@
 #define SENSOR_6 4
 #define SENSOR_7 16
 
-#define MY_ADDRESS 0x08
+//MUDAR ISTO, PRIMEIRO SLAVE = 1, SEGUNDO SLAVE = 2, ...
+#define ESPSLAVENUMBER 1
 
-typedef struct {
-  char action;
-  int port_index;
-  int value;
-} request_t;
+//NÃO MUDAR ISTO
+#define PORTMIN 1 + 7 * ESPSLAVENUMBER
+#define PORTMAX 7 * (ESPSLAVENUMBER + 1)
 
-request_t request;
-
-//ARDUINO
 void setup() {
-  Serial.begin(9600);
-  Serial.println();
+  Serial.begin(115200);  //initialize serial communication at a 9600 baud rate
   start_ports();
-  setup_I2C();
-
-  Serial.println("Slave Ready");
+  Serial.onReceive(Receive);
 }
 void loop() {
 }
@@ -89,9 +79,7 @@ void atuador(int portIndex, int high) {
   }
 }
 
-//SETUP
 void start_ports() {
-
   ///////////////////////////////////////////////
   //Inicializar os portos
   //Input
@@ -112,47 +100,35 @@ void start_ports() {
   pinMode(SENSOR_6, INPUT);
   pinMode(SENSOR_7, INPUT);
 }
-void setup_I2C() {
-  Wire.begin(MY_ADDRESS);       // Initialize I2C communication as a slave
-  Wire.onReceive(receiveData);  // Register the receive event handler
-  Wire.onRequest(sendData);     // Register the request event handler
-}
 
-//I2C CALLBACKS
-void receiveData(int _) {
+void Receive() {
+  char incomingByte = 0;  // for incoming serial data
+  char action = 0;
+  char portIndexChar = 0;
+  int portIndexInt = 0;
+  char valueChar = 0;
+  int valueInt = 0;
 
-  request.value = -1;  //Colocar valor por default, porque se for Get, este valor vai ser algo estranho
-
-  for (int dataIndex = 0; Wire.available(); dataIndex++) {
-    switch (dataIndex) {
-      case 0:
-        request.action = Wire.read();
-        break;
-      case 1:
-        request.port_index = Wire.read() - '0';
-        break;
-      case 2:
-        request.value = Wire.read() - '0';
-        break;
-      default:
-        break;
-    }
+  while (Serial.available()) {
+    incomingByte = (char)Serial.read();
+    if (incomingByte == 'G' || incomingByte == 'S') { break; }
   }
-}
-void sendData() {
-  int valToSend;
 
-  switch (request.action) {
-    //GET
+  action = incomingByte;
+  portIndexChar = Serial.read();
+  portIndexInt = portIndexChar - '0';
+
+  if (!(portIndexInt >= PORTMIN && portIndexInt <= PORTMAX)) { return; }
+  portIndexInt -= 7 * ESPSLAVENUMBER;
+
+  switch (action) {
     case 'G':
-      valToSend = sensor(request.port_index);
-      Wire.write(valToSend);
+      Serial.write(sensor(portIndexInt) + '0');
       break;
-
-    //SET
     case 'S':
-      atuador(request.port_index, request.value);
+      valueChar = Serial.read();
+      valueInt = valueChar - '0';
+      atuador(portIndexInt, valueInt);
       break;
   }
-  //Serial.printf("To message %c%d, I responded with %d\n",request.action,request.port_index,valToSend);
 }
