@@ -720,29 +720,29 @@ bool SenseLoadingStation() {
   taskENTER_CRITICAL(&spinlock);
   int bit = GetBitValue(7);
   taskEXIT_CRITICAL(&spinlock);
-  return (bit == 1);
+  return (bit == 0);
 }
 bool SenseDrillingMachine() {
   taskENTER_CRITICAL(&spinlock);
   int bit = GetBitValue(8);
   taskEXIT_CRITICAL(&spinlock);
-  return (bit == 1);
+  return (bit == 0);
 }
 bool SenseMillingMachine() {
   taskENTER_CRITICAL(&spinlock);
   int bit = GetBitValue(6);
   taskEXIT_CRITICAL(&spinlock);
-  return (bit == 1);
+  return (bit == 0);
 }
 bool SenseSlider1() {
   taskENTER_CRITICAL(&spinlock);
   int bit = GetBitValue(5);
   taskEXIT_CRITICAL(&spinlock);
-  return (bit == 1);
+  return (bit == 0);
 }
 bool SenseConveyorSwap() {
   taskENTER_CRITICAL(&spinlock);
   int bit = GetBitValue(9);
   taskEXIT_CRITICAL(&spinlock);
-  return (bit == 1);
+  return (bit == 0);
 }
