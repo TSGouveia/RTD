@@ -366,12 +366,7 @@ bool SenseLoadingStation()
     taskENTER_CRITICAL();
     int bit = GetBitValue(1, 7);
     taskEXIT_CRITICAL();
-    if (bit == 1) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return (bit == 0);
 }
 
 bool SenseDrillingMachine()
@@ -379,12 +374,7 @@ bool SenseDrillingMachine()
     taskENTER_CRITICAL();
     int bit = GetBitValue(1, 8);
     taskEXIT_CRITICAL();
-    if (bit == 1) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return (bit == 0);
 }
 
 bool SenseMillingMachine()
@@ -392,12 +382,7 @@ bool SenseMillingMachine()
     taskENTER_CRITICAL();
     int bit = GetBitValue(1, 6);
     taskEXIT_CRITICAL();
-    if (bit == 1) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return (bit == 0);
 }
 
 bool SenseSlider1()
@@ -405,12 +390,7 @@ bool SenseSlider1()
     taskENTER_CRITICAL();
     int bit = GetBitValue(1, 5);
     taskEXIT_CRITICAL();
-    if (bit == 1) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return (bit == 0);
 }
 
 bool SenseConveyorSwap()
@@ -418,10 +398,5 @@ bool SenseConveyorSwap()
     taskENTER_CRITICAL();
     int bit = GetBitValue(1, 9);
     taskEXIT_CRITICAL();
-    if (bit == 1) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return (bit == 0);
 }
