@@ -5,8 +5,6 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Web;
-using Unity.VisualScripting.FullSerializer;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 public class PostManager : MonoBehaviour
@@ -24,7 +22,7 @@ public class PostManager : MonoBehaviour
     void StartServer()
     {
         // Replace this with the port you want to listen on
-        string url = "http://localhost:80/transporte/";
+        string url = "http://localhost:80/";
 
         listener = new HttpListener();
         listener.Prefixes.Add(url);
