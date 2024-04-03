@@ -27,6 +27,25 @@ Onde X é o número do port
 
 ------------------------------------------------------------------------------------------
 
+### Posts
+[Isto serve para enviar skills para o Unity] \
+HTTP posts com key \
+Ip da Unity -> localhost:80
+
+### Exemplo de post
+localhost:80/?skill=C1SL1
+
+### Skills disponiveis
+C1SL1 \
+SL1C2 \
+C2C3 \
+C3SL2 \
+SL2C4 \
+mill \
+drill
+
+------------------------------------------------------------------------------------------
+
 ## Sensores IX
 
 | Number | Function          | Active |
