@@ -14,7 +14,7 @@
 ------------------------------------------------------------------------------------------
 ## Comunicação
 
-## Visual Studio -> Unity
+### Visual Studio -> Unity
 [Isto serve para trocar bits no Unity] \
 Socket com String \
 Ip da Unity -> localhost:3000
@@ -25,7 +25,7 @@ Onde X é o número do port e V é o valor do bit (0 ou 1)
 "GX" \
 Onde X é o número do port
 
-## Posts
+### Posts
 [Isto serve para enviar skills para o Unity] \
 HTTP posts com key \
 Ip da Unity -> localhost:80
