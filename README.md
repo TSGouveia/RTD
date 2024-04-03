@@ -33,7 +33,7 @@ HTTP posts com key \
 Ip da Unity -> localhost:80
 
 ### Exemplo de post
-localhost:80/transporte/?skill=C1SL1
+localhost:80/?skill=C1SL1
 
 ### Skills disponiveis
 C1SL1 \
