@@ -25,6 +25,8 @@ Onde X é o número do port e V é o valor do bit (0 ou 1)
 "GX" \
 Onde X é o número do port
 
+------------------------------------------------------------------------------------------
+
 ### Posts
 [Isto serve para enviar skills para o Unity] \
 HTTP posts com key \
