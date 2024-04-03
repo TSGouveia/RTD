@@ -11,6 +11,8 @@ public class BoxMovement : MonoBehaviour
     private int beltsInContact = 0;
     private float boxSpeed = 0;
 
+    bool[] conveyorsON = { false, false, false, false, };
+
     private void Start()
     {
         boxRB = GetComponent<Rigidbody>();
@@ -25,7 +27,7 @@ public class BoxMovement : MonoBehaviour
         else
         {
             boxRB.velocity = direction * boxSpeed;
-        }        
+        }
     }
 
     public void ChangeBoxSpeed(float newSpeed)
@@ -33,13 +35,22 @@ public class BoxMovement : MonoBehaviour
         boxSpeed = newSpeed;
     }
 
-    public void IncrementConveyorNumber(Vector3 newDirection)
+    public void IncrementConveyorNumber(Vector3 newDirection, int conveyorNumber)
     {
-        beltsInContact++;
-        direction = newDirection;
+        if (!conveyorsON[conveyorNumber])
+        {
+            beltsInContact++;
+            direction = newDirection;
+            conveyorsON[conveyorNumber] = true;
+        }
+
     }
-    public void DecrementConveyorNumber()
+    public void DecrementConveyorNumber(int conveyorNumber)
     {
-        beltsInContact--;
+        if (beltsInContact > 0 && conveyorsON[conveyorNumber])
+        {
+            beltsInContact--;
+            conveyorsON[conveyorNumber] = false;
+        }
     }
 }

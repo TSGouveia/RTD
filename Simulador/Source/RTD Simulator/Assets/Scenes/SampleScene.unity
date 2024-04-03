@@ -1951,6 +1951,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2581777943431704375, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
+      propertyPath: conveyorNumber
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2870650269480238292, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
       propertyPath: activeHigh
       value: 0
@@ -1962,6 +1966,14 @@ PrefabInstance:
     - target: {fileID: 3372402699527216769, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
       propertyPath: activeHigh
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4317576212200043162, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
+      propertyPath: conveyorNumber
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7207827771023300268, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
+      propertyPath: conveyorNumber
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8900377480537936297, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
       propertyPath: m_Name

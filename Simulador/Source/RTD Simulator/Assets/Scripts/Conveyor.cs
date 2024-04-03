@@ -7,6 +7,9 @@ public class Conveyor : MonoBehaviour
     [SerializeField]
     private Vector3 movementDirection;
 
+    [SerializeField]
+    private int conveyorNumber;
+
     private List<Product> products = new List<Product>();
 
     private float animationSpeed = 0;
@@ -66,18 +69,28 @@ public class Conveyor : MonoBehaviour
 
     private void TurnOnConveyorPhysics(Product product)
     {
+        if (product.boxMovement == null)
+        {
+            products.Remove(product);
+            return;
+        }
         if (product.productColliding && animationSpeed > 0)
         {
-            product.boxMovement.IncrementConveyorNumber(movementDirection);
+            product.boxMovement.IncrementConveyorNumber(movementDirection, conveyorNumber);
             product.boxMovement.ChangeBoxSpeed(Mechanism.boxSpeed);
             Debug.Log("START: " + product.boxMovement.gameObject.name);
         }
     }
     private void TurnOffConveyorPhysics(Product product)
     {
+        if (product.boxMovement == null)
+        {
+            products.Remove(product);
+            return;
+        }
         if (product.productColliding)
         {
-            product.boxMovement.DecrementConveyorNumber();
+            product.boxMovement.DecrementConveyorNumber(conveyorNumber);
             Debug.Log("STOP: " + product.boxMovement.gameObject.name);
         }
     }
