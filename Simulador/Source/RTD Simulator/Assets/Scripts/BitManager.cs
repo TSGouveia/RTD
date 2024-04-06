@@ -66,9 +66,10 @@ public class BitManager : MonoBehaviour
             bool newValue = (intValue == 1);
             SetBitValue(portIndex, newValue);
         }
-        else
+        else if (letterRequest == 'G')
         {
-            int bitValue = GetBitValue( portIndex);
+
+            int bitValue = GetBitValue(portIndex);
             responseBuffer = BitConverter.GetBytes(bitValue);
         }
 
@@ -79,7 +80,7 @@ public class BitManager : MonoBehaviour
         isConnected = false;
     }
 
-    int GetBitValue( int portIndex)
+    int GetBitValue(int portIndex)
     {
         Debug.Log(" I " + portIndex);
         bool value = portManager.GetPortValue('I', portIndex);
@@ -89,11 +90,11 @@ public class BitManager : MonoBehaviour
         return value ? 1 : 0;
     }
 
-    void SetBitValue( int portIndex, bool value)
+    void SetBitValue(int portIndex, bool value)
     {
         SetParameters p = new SetParameters();
- 
-        p.portIndex = portIndex; 
+
+        p.portIndex = portIndex;
         p.value = value;
 
         parameters.Enqueue(p);
@@ -113,10 +114,10 @@ public class BitManager : MonoBehaviour
 
     private void Update()
     {
-        if (parameters.Count > 0) 
+        if (parameters.Count > 0)
         {
             SetParameters p = parameters.Dequeue();
-            portManager.ChangePortValue('Q',p.portIndex, p.value);
+            portManager.ChangePortValue('Q', p.portIndex, p.value);
         }
     }
 }

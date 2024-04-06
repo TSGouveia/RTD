@@ -12,10 +12,13 @@ public class Sensor : MonoBehaviour
     private PortManager portHandlerScript;
 
     private bool collisionCheck = false;
-    private void Start()
+    private void Awake()
     {
         portHandlerScript = FindObjectOfType<PortManager>();
-        portHandlerScript.ChangePortValue('I', sensorNumber,!activeHigh);
+    }
+    private void Start()
+    {
+        portHandlerScript.ChangePortValue('I', sensorNumber, !activeHigh);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -49,5 +52,10 @@ public class Sensor : MonoBehaviour
             }
             collisionCheck = true;
         }
+    }
+
+    public void ObjectIsBeingDestroyed()
+    {
+        portHandlerScript.ChangePortValue('I', sensorNumber, !activeHigh);
     }
 }
