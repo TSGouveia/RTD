@@ -2034,6 +2034,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 301577057322986344, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
+      propertyPath: m_TagString
+      value: Sensor
+      objectReference: {fileID: 0}
     - target: {fileID: 588085056288545413, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
       propertyPath: activeHigh
       value: 0
@@ -2041,6 +2045,18 @@ PrefabInstance:
     - target: {fileID: 725292127649160320, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
       propertyPath: activeHigh
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1408396786837261188, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
+      propertyPath: m_TagString
+      value: Sensor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1419667864616010569, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
+      propertyPath: m_TagString
+      value: Sensor
+      objectReference: {fileID: 0}
+    - target: {fileID: 2008745852536736763, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
+      propertyPath: m_TagString
+      value: Sensor
       objectReference: {fileID: 0}
     - target: {fileID: 2148171457785713961, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2090,6 +2106,10 @@ PrefabInstance:
       propertyPath: activeHigh
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2963696951579322346, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
+      propertyPath: m_TagString
+      value: Sensor
+      objectReference: {fileID: 0}
     - target: {fileID: 3223972418112761088, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
       propertyPath: activeHigh
       value: 0
@@ -2102,6 +2122,18 @@ PrefabInstance:
       propertyPath: conveyorNumber
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6550299508770866890, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
+      propertyPath: m_TagString
+      value: Sensor
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693172673460820219, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
+      propertyPath: m_TagString
+      value: Sensor
+      objectReference: {fileID: 0}
+    - target: {fileID: 7146618364954885910, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
+      propertyPath: m_TagString
+      value: Sensor
+      objectReference: {fileID: 0}
     - target: {fileID: 7207827771023300268, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
       propertyPath: conveyorNumber
       value: 3
@@ -2109,6 +2141,10 @@ PrefabInstance:
     - target: {fileID: 8900377480537936297, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
       propertyPath: m_Name
       value: Kit
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938742106569738372, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}
+      propertyPath: m_TagString
+      value: Sensor
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 426872459655417748, guid: 81ec8f26c6169b4428f5a5e09ba2c722, type: 3}

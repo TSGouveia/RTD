@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Product
   - SensorActivator
+  - Sensor
   layers:
   - Default
   - TransparentFX
